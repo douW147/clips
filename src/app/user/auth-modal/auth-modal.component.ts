@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthModalComponent implements OnInit {
 
+  authModalId: string = "auth";
+
   constructor() { }
 
   ngOnInit(): void {

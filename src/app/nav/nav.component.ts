@@ -8,6 +8,8 @@ import { ModalService } from '../services/modal.service';
 })
 export class NavComponent implements OnInit {
 
+  authModalId: string = "auth";
+
   constructor(public modal: ModalService) { }
 
   ngOnInit(): void {
@@ -16,7 +18,7 @@ export class NavComponent implements OnInit {
   onLoginRegister(event: Event) {
     event.preventDefault();
 
-    this.modal.toggleIsVisible();
+    this.modal.toggleIsVisible(this.authModalId);
   }
 
 }
