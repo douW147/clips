@@ -1,4 +1,5 @@
 <app-nav></app-nav>
+
 <section class="relative overflow-hidden mb-2"> 
   <!-- The video -->
   <video autoplay muted loop class="w-full h-full object-cover absolute z-0">
@@ -245,4 +246,5 @@
     </a>
   </div>
 </section>
-<app-auth-modal></app-auth-modal>
+
+<app-auth-modal *ngIf="!(authentication.isAuthenticatedWithDelay$ | async)"></app-auth-modal>

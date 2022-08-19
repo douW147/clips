@@ -1,8 +1,7 @@
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-register',
@@ -11,10 +10,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class RegisterComponent {
 
-  constructor(
-    private auth: AngularFireAuth,
-    private database: AngularFirestore
-    ) {
+  constructor(private authentication: AuthenticationService) {
      
   }
 
@@ -43,7 +39,7 @@ export class RegisterComponent {
     Validators.required,
     Validators.min(11),
   ]);
-  age = new FormControl("", [
+  age = new FormControl<number | null>(null, [
     Validators.required,
     Validators.min(3)
   ]);
@@ -66,14 +62,7 @@ export class RegisterComponent {
     const {email, password} = this.registerForm.value;
 
     try {
-      const userCredentials = await this.auth.createUserWithEmailAndPassword(email as string, password as string);
-      
-      await this.database.collection('users').add({
-        name: this.name.value,
-        email: this.email.value,
-        age: this.age.value,
-        phoneNumber: this.phoneNumber.value,
-      })
+      await this.authentication.createUser(this.registerForm.value as User);
     } catch (error) {
       console.error(error);
 
@@ -86,6 +75,7 @@ export class RegisterComponent {
 
     this.alertMessage = "Succesfuly registered";
     this.alertColor = "green";
+    this.inSubmition = false;
     
   }
 

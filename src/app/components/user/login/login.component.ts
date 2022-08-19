@@ -1,3 +1,4 @@
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Credentials } from 'src/app/models/credentials.model';
@@ -14,15 +15,40 @@ export class LoginComponent {
     password: ""
   }
 
-  alertMessage: string = "Successfully logged in";
+  alertMessage: string = "Logging...";
   alertColor: string = "blue";
   showAlert: boolean = false;
+  inSubmition: boolean = false;
 
-  submitLogin() {
-    this.alertMessage = "Successfully logged in";
-    this.alertColor = "blue";
+  constructor(private authentication: AngularFireAuth) {
+
+  }
+
+  async submitLogin() {
     this.showAlert = true;
-    
+    this.alertMessage = "Logging...";
+    this.alertColor = "blue";
+    this.inSubmition = true;
+
+    try {
+      await this.authentication.signInWithEmailAndPassword(
+        this.credentials.email, 
+        this.credentials.password
+      );
+
+      this.inSubmition = false;
+      this.alertMessage = "Successfully logged in";
+      this.alertColor = "green";
+
+    } catch(error) {
+      console.error(error);
+
+      this.inSubmition = false;
+      this.alertMessage = "Something went wrong";
+      this.alertColor = "red";
+
+      return 
+    }  
   }
 
 }

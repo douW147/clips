@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalService } from '../shared/modal.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-nav',
@@ -10,7 +12,11 @@ export class NavComponent implements OnInit {
 
   authModalId: string = "auth";
 
-  constructor(public modal: ModalService) { }
+  constructor(
+    public modal: ModalService,
+    public authentication: AuthenticationService,
+    public fireAuthentication: AngularFireAuth
+  ) { }
 
   ngOnInit(): void {
   }
@@ -19,6 +25,12 @@ export class NavComponent implements OnInit {
     event.preventDefault();
 
     this.modal.toggleIsVisible(this.authModalId);
+  }
+
+  async logout(event: Event) {
+    event.preventDefault();
+
+    await this.fireAuthentication.signOut();
   }
 
 }
