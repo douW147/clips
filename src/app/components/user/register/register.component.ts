@@ -1,5 +1,8 @@
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+
 
 @Component({
   selector: 'app-register',
@@ -8,9 +11,18 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class RegisterComponent {
 
+  constructor(
+    private auth: AngularFireAuth,
+    private database: AngularFirestore
+    ) {
+     
+  }
+
   showAlert: boolean = false;
   alertColor: string = "blue";
   alertMessage: string = "Your account is being created";
+  inSubmition: boolean = false;
+
 
   name = new FormControl("", [
     Validators.required,
@@ -45,10 +57,36 @@ export class RegisterComponent {
     age: this.age,
   });
 
-  submitRegister() {
+  async submitRegister() {
     this.showAlert = true;
+    this.inSubmition = true;
     this.alertColor = "blue";
     this.alertMessage = "Your account is being created";
+
+    const {email, password} = this.registerForm.value;
+
+    try {
+      const userCredentials = await this.auth.createUserWithEmailAndPassword(email as string, password as string);
+      
+      await this.database.collection('users').add({
+        name: this.name.value,
+        email: this.email.value,
+        age: this.age.value,
+        phoneNumber: this.phoneNumber.value,
+      })
+    } catch (error) {
+      console.error(error);
+
+      this.alertMessage = "Something went wrong. Try again later";
+      this.alertColor = "red";
+      this.inSubmition = false;
+
+      return
+    }
+
+    this.alertMessage = "Succesfuly registered";
+    this.alertColor = "green";
+    
   }
 
 }

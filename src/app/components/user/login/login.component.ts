@@ -22,6 +22,7 @@ export class LoginComponent {
     this.alertMessage = "Successfully logged in";
     this.alertColor = "blue";
     this.showAlert = true;
+    
   }
 
 }
