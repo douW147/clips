@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+
 import { AuthenticationService } from 'src/app/services/authentication.service';
+
 import { User } from 'src/app/models/user.model';
+
+import { PasswordVaidator } from '../formValidators/match-vaidator';
+import { EmailValidator } from '../formValidators/email-validator'; 
 
 @Component({
   selector: 'app-register',
@@ -10,7 +15,10 @@ import { User } from 'src/app/models/user.model';
 })
 export class RegisterComponent {
 
-  constructor(private authentication: AuthenticationService) {
+  constructor(
+    private authentication: AuthenticationService,
+    private emailValidator: EmailValidator
+    ) {
      
   }
 
@@ -27,7 +35,7 @@ export class RegisterComponent {
   email = new FormControl("", [
     Validators.required,
     Validators.email
-  ]);
+  ], [this.emailValidator.validate]);
   password = new FormControl("", [
     Validators.required,
     Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm)
@@ -51,15 +59,13 @@ export class RegisterComponent {
     confirmPassword: this.confirmPassword,
     phoneNumber: this.phoneNumber,
     age: this.age,
-  });
+  }, [PasswordVaidator.match("password", "confirmPassword")]);
 
   async submitRegister() {
     this.showAlert = true;
     this.inSubmition = true;
     this.alertColor = "blue";
     this.alertMessage = "Your account is being created";
-
-    const {email, password} = this.registerForm.value;
 
     try {
       await this.authentication.createUser(this.registerForm.value as User);
@@ -76,7 +82,6 @@ export class RegisterComponent {
     this.alertMessage = "Succesfuly registered";
     this.alertColor = "green";
     this.inSubmition = false;
-    
   }
 
 }

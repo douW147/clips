@@ -3,20 +3,22 @@
     duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
     [placeholder]="placeholder" [mask]="format"/>
 <ng-container *ngIf="control.touched && control.dirty">
-    <p *ngIf="control.errors?.['pattern']" class="text-red-400">
+    <p *ngIf="control.errors?.['pattern']" class="text-red-400 pt-1">
         Enter valid password
     </p>
     <p *ngIf="control.errors?.['required']
         && control.touched"
-        class="text-red-400">
+        class="text-red-400 pt-1">
     Field is required
     </p>
     <p *ngIf="control.errors?.['minlength']
             && control.touched"
-            class="text-red-400">
+            class="text-red-400 pt-1">
         Name must be at least {{ control.errors?.['minlength'].requiredLength }} characters length
     </p>
-    <p *ngIf="control.errors?.['email']" class="text-red-400">Email must be valid</p>
-    <p *ngIf="control.errors?.['min']" class="text-red-400">Age must be at least {{control.errors?.['min'].min}}</p>
-    <p *ngIf="control.errors?.['mask']" class="text-red-400">Enter valid phone number</p>
+    <p *ngIf="control.errors?.['email']" class="text-red-400 pt-1">Email must be valid</p>
+    <p *ngIf="control.errors?.['min']" class="text-red-400 pt-1">Age must be at least {{control.errors?.['min'].min}}</p>
+    <p *ngIf="control.errors?.['mask']" class="text-red-400 pt-1">Enter valid phone number</p>
+    <p *ngIf="control.errors?.['noMatch']" class="text-red-400 pt-1">There is no match</p>
+    <p *ngIf="control.errors?.['emailTaken']" class="text-red-400 pt-1">This email is taken</p>
 </ng-container>
