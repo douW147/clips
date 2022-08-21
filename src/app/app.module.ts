@@ -6,6 +6,7 @@ import { AngularFireModule } from "@angular/fire/compat";
 import { environment } from 'src/environments/environment';
 import { AngularFireAuthModule } from "@angular/fire/compat/auth"
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
+import { AngularFireStorageModule } from "@angular/fire/compat/storage";
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './components/nav/nav.component';
@@ -33,6 +34,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     AngularFirestoreModule,
     VideoModule,
     AppRoutingModule,
+    AngularFireStorageModule
   ],
   providers: [],
   bootstrap: [AppComponent]
